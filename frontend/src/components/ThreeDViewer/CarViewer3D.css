@@ -1,0 +1,451 @@
+.car-viewer-3d-wrapper {
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at center, #151a24 0%, #080a0f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.viewer-canvas-box {
+  width: 100%;
+  height: 500px;
+  position: relative;
+}
+
+.viewer-canvas-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+  cursor: grab;
+}
+
+.viewer-canvas-box canvas:active {
+  cursor: grabbing;
+}
+
+/* ==========================================
+   📍 3D HOTSPOT PINS & DETAIL CARD
+   ========================================== */
+.hotspot-3d-pin {
+  background: rgba(14, 18, 24, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid var(--color-accent);
+  color: #ffffff;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+  transform: translate3d(-50%, -50%, 0);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.hotspot-3d-pin:hover,
+.hotspot-3d-pin.active-pin {
+  background: var(--color-accent);
+  color: #000000;
+  transform: translate3d(-50%, -50%, 0) scale(1.15);
+  box-shadow: 0 0 25px rgba(255, 107, 0, 0.8);
+}
+
+.hotspot-detail-card {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  max-width: 280px;
+  background: rgba(14, 18, 24, 0.92);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 107, 0, 0.4);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  z-index: 20;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+.hotspot-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.hotspot-close-btn:hover {
+  color: #ffffff;
+}
+
+.hotspot-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+}
+
+.hotspot-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  margin-bottom: 0.6rem;
+}
+
+.hotspot-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.45rem;
+}
+
+.hotspot-rev-trigger {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: var(--color-accent);
+  color: #000;
+  border: none;
+  padding: 0.45rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+/* ==========================================
+   🎛️ TOP HUD & PRESETS
+   ========================================== */
+.viewer-top-hud {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.viewer-top-hud > * {
+  pointer-events: auto;
+}
+
+.viewer-brand-tag {
+  background: rgba(14, 18, 24, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.studio-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00f2ff;
+  box-shadow: 0 0 10px #00f2ff;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.camera-view-presets {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(14, 18, 24, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.25rem;
+  border-radius: var(--radius-full);
+}
+
+.camera-view-presets button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.camera-view-presets button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   🏎️ TACHOMETER RPM GAUGE WIDGET
+   ========================================== */
+.viewer-tachometer-box {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(14, 18, 24, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  min-width: 190px;
+  z-index: 10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.tacho-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.tacho-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.tacho-val {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.tacho-val small {
+  font-size: 0.65rem;
+  color: var(--color-accent);
+}
+
+.tacho-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+
+.tacho-bar-fill {
+  height: 100%;
+  transition: width 0.3s cubic-bezier(0.1, 0.8, 0.2, 1), background-color 0.2s ease;
+}
+
+.tacho-rev-btn {
+  width: 100%;
+  background: rgba(255, 107, 0, 0.15);
+  border: 1px solid rgba(255, 107, 0, 0.4);
+  color: #ffffff;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tacho-rev-btn:hover {
+  background: var(--color-accent);
+  color: #000000;
+}
+
+.tacho-rev-btn.active-rev {
+  background: #ff3b30;
+  border-color: #ff3b30;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(255, 59, 48, 0.8);
+}
+
+/* ==========================================
+   🎨 CUSTOMIZER PANEL CONTROLS
+   ========================================== */
+.viewer-customizer-panel {
+  background: rgba(10, 13, 18, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.customizer-section-title {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 0.6rem;
+}
+
+.customizer-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.customizer-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+/* Finish Pills */
+.finish-pill-group {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.finish-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.finish-pill:hover,
+.finish-pill.active-finish {
+  background: rgba(255, 107, 0, 0.15);
+  border-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* Color Grid */
+.color-palette-grid {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.studio-color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.studio-color-circle:hover {
+  transform: scale(1.2);
+  border-color: #ffffff;
+}
+
+.studio-color-circle.active-color-circle {
+  transform: scale(1.25);
+  border-color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+/* Caliper Swatches */
+.caliper-color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.caliper-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.caliper-swatch:hover,
+.caliper-swatch.active-caliper {
+  transform: scale(1.25);
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Studio Toggles */
+.studio-feature-toggles {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.8rem;
+}
+
+.studio-toggle {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-secondary);
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.studio-toggle:hover,
+.studio-toggle.active {
+  background: rgba(255, 107, 0, 0.15);
+  border-color: rgba(255, 107, 0, 0.4);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .viewer-canvas-box {
+    height: 380px;
+  }
+  .customizer-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  .studio-feature-toggles {
+    flex-wrap: wrap;
+  }
+}

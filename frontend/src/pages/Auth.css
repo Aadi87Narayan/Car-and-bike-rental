@@ -1,0 +1,520 @@
+﻿/* 
+ * DriveX Luxury Sliding Auth System
+ * Canonical Double-Slider Architecture
+ */
+
+:root {
+  --auth-beige: #F5F2EA;
+  --auth-dark-green: #082E25;
+  --auth-dark-green-hover: #0D3D30;
+  --auth-dark-green-gradient: linear-gradient(135deg, #082E25 0%, #031B15 100%);
+  --auth-gold: #9D7C49;
+  --auth-gold-light: #E6DBC5;
+  --auth-text-dark: #1C2E2A;
+  --auth-text-muted: #7E8B85;
+}
+
+.auth-page-wrapper {
+  min-height: 100vh;
+  padding: 100px 20px 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg, #0B0F14);
+}
+
+/* ==========================================================================
+   1. MAIN CONTAINER (Bounding Card Shell)
+   ========================================================================== */
+.auth-main-container {
+  position: relative;
+  width: 1000px;
+  max-width: 100%;
+  height: 640px;
+  background-color: var(--auth-beige);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6);
+  font-family: var(--font-main, 'Inter', sans-serif);
+  color: var(--auth-text-dark);
+  animation: authCardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ==========================================================================
+   2. STATIONARY / SLIDING FORM CONTAINERS
+   ========================================================================== */
+.form-panel-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  box-sizing: border-box;
+  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.5s ease-in-out,
+              z-index 0.65s ease;
+}
+
+.form-panel-container::-webkit-scrollbar {
+  width: 4px;
+}
+.form-panel-container::-webkit-scrollbar-thumb {
+  background: var(--auth-gold-light);
+  border-radius: 4px;
+}
+
+/* Default Sign-In State: Positioned on the Left half */
+.sign-in-container {
+  left: 0;
+  z-index: 2;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* Default Sign-Up State: Positioned on the Left half (Underneath), hidden */
+.sign-up-container {
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0);
+}
+
+/* --- When Sign-Up is Active (.is-signup) --- */
+.auth-main-container.is-signup .sign-in-container {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.auth-main-container.is-signup .sign-up-container {
+  transform: translateX(100%);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* ==========================================================================
+   3. SLIDING OVERLAY CONTAINER (The Moving Vault Blade)
+   ========================================================================== */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 100;
+  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* When Sign-Up is Active: Slide overlay to the Left */
+.auth-main-container.is-signup .overlay-container {
+  transform: translateX(-100%);
+}
+
+/* The double-width gradient canvas */
+.overlay {
+  background: var(--auth-dark-green-gradient);
+  color: var(--auth-beige);
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* When Sign-Up is Active: Shift the inner gradient to keep view centered */
+.auth-main-container.is-signup .overlay {
+  transform: translateX(50%);
+}
+
+/* Individual Content Panels inside the Overlay */
+.overlay-panel {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 45px;
+  height: 100%;
+  width: 50%;
+  text-align: center;
+  box-sizing: border-box;
+  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Left panel (Shown during Sign-Up mode, prompting user to Sign In) */
+.overlay-left {
+  left: 0;
+  transform: translateX(-20%);
+}
+
+.auth-main-container.is-signup .overlay-left {
+  transform: translateX(0);
+}
+
+/* Right panel (Shown during Sign-In mode, prompting user to Sign Up) */
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.auth-main-container.is-signup .overlay-right {
+  transform: translateX(20%);
+}
+
+/* ==========================================================================
+   4. TYPOGRAPHY & BRANDING
+   ========================================================================== */
+.auth-brand-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--auth-gold);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.auth-form-title {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--auth-dark-green);
+  font-family: var(--font-display, 'Outfit', sans-serif);
+  margin: 0;
+}
+
+.auth-form-subtitle {
+  font-size: 0.85rem;
+  color: var(--auth-text-muted);
+  margin: 0.4rem 0 1.5rem 0;
+  line-height: 1.4;
+}
+
+/* Overlay Titles & Badges */
+.auth-blade-brand {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--auth-gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.auth-blade-heading {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+}
+
+.auth-blade-heading .gold-text {
+  color: var(--auth-gold);
+}
+
+.auth-blade-body {
+  font-size: 0.92rem;
+  color: rgba(245, 242, 234, 0.75);
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 2rem;
+}
+
+/* ==========================================================================
+   5. FORM INPUTS & FLOATING LABELS
+   ========================================================================== */
+.auth-custom-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.auth-floating-group {
+  position: relative;
+  width: 100%;
+  border-bottom: 2px solid var(--auth-gold-light);
+  padding-bottom: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.auth-floating-group::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--auth-dark-green);
+  transition: width 0.3s ease;
+}
+
+.auth-floating-group:focus-within::after {
+  width: 100%;
+}
+
+.auth-floating-input {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 8px 32px 6px 0;
+  color: var(--auth-text-dark);
+  font-size: 0.95rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.auth-floating-label {
+  position: absolute;
+  left: 0;
+  top: 8px;
+  font-size: 0.9rem;
+  color: var(--auth-text-muted);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.auth-floating-input:focus ~ .auth-floating-label,
+.auth-floating-input:not(:placeholder-shown) ~ .auth-floating-label {
+  top: -12px;
+  font-size: 0.72rem;
+  color: var(--auth-gold);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.auth-field-icon {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  color: var(--auth-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.auth-floating-group:focus-within .auth-field-icon {
+  color: var(--auth-dark-green);
+}
+
+.auth-eye-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.auth-fields-row {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.auth-fields-row .auth-floating-group {
+  flex: 1;
+}
+
+.auth-extras-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+
+.auth-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--auth-text-dark);
+  cursor: pointer;
+}
+
+.auth-checkbox-input {
+  accent-color: var(--auth-dark-green);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.auth-forgot-btn {
+  background: none;
+  border: none;
+  color: var(--auth-gold);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.82rem;
+}
+
+.auth-forgot-btn:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   6. BUTTONS & ACTIONS
+   ========================================================================== */
+.auth-capsule-button {
+  background: var(--auth-dark-green);
+  color: #ffffff;
+  border: none;
+  padding: 13px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(8, 46, 37, 0.25);
+  width: 100%;
+}
+
+.auth-capsule-button:hover {
+  background: var(--auth-dark-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(8, 46, 37, 0.35);
+}
+
+.auth-capsule-button:disabled {
+  background: var(--auth-text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-ghost-button {
+  background: transparent;
+  border: 2px solid var(--auth-beige);
+  color: var(--auth-beige);
+  padding: 12px 32px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.auth-ghost-button:hover {
+  background: var(--auth-beige);
+  color: var(--auth-dark-green);
+  transform: scale(1.04);
+}
+
+.auth-switch-prompt {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--auth-text-muted);
+}
+
+.auth-inline-switch {
+  background: none;
+  border: none;
+  color: var(--auth-gold);
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 0.35rem;
+  padding: 0;
+  border-bottom: 1px solid var(--auth-gold);
+}
+
+.auth-inline-switch:hover {
+  color: var(--auth-dark-green);
+  border-color: var(--auth-dark-green);
+}
+
+/* ==========================================================================
+   7. BANNERS (Error & Success)
+   ========================================================================== */
+.auth-error-banner {
+  background: #FEE2E2;
+  border-left: 4px solid #DC2626;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: #991B1B;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.4rem;
+}
+
+.auth-success-banner {
+  background: #DCFCE7;
+  border-left-color: #16A34A;
+  color: #166534;
+}
+
+/* ==========================================================================
+   8. ENTRANCE ANIMATIONS
+   ========================================================================== */
+@keyframes authCardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   9. RESPONSIVE / MOBILE ADAPTATION (< 860px)
+   ========================================================================== */
+@media (max-width: 860px) {
+  .auth-main-container {
+    width: 480px;
+    min-height: 580px;
+    height: auto;
+    border-radius: 20px;
+  }
+
+  .overlay-container {
+    display: none;
+  }
+
+  .form-panel-container {
+    position: relative;
+    width: 100%;
+    padding: 2.5rem 2rem;
+    transform: none !important;
+  }
+
+  .sign-in-container {
+    display: flex;
+  }
+
+  .sign-up-container {
+    display: none;
+  }
+
+  .auth-main-container.is-signup .sign-in-container {
+    display: none;
+  }
+
+  .auth-main-container.is-signup .sign-up-container {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

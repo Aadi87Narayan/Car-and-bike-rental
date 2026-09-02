@@ -1,0 +1,31 @@
+{
+  "name": "drivex-car-rental",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "cd drivex-backend && npm run dev",
+    "seed": "cd drivex-backend && npm run seed",
+    "dev:all": "concurrently -n \"FRONTEND,BACKEND\" -c \"cyan,magenta\" \"npm run dev\" \"cd drivex-backend && npm run dev\"",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.111.0",
+    "@react-three/fiber": "^8.17.6",
+    "canvas-confetti": "^1.9.3",
+    "framer-motion": "^11.3.28",
+    "lucide-react": "^0.428.0",
+    "mongodb": "^7.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0",
+    "three": "^0.167.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^10.0.5",
+    "vite": "^5.4.1"
+  }
+}

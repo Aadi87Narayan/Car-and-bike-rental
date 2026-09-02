@@ -1,0 +1,294 @@
+.hero-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  /* Blend entire wrapper into hero bg */
+  isolation: isolate;
+}
+
+/* Ambient Neon Glow */
+.hero-video-glow {
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle at 60% 40%, rgba(255, 107, 0, 0.22) 0%, rgba(0, 242, 255, 0.12) 60%, transparent 80%);
+  filter: blur(35px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Main Video Frame Box */
+.hero-video-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 510px;
+  background: transparent;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 0 30px rgba(255, 107, 0, 0.12);
+  z-index: 2;
+}
+
+.hero-video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: transparent;
+  /*
+   * screen blend mode: dark pixels (black bg) become transparent,
+   * bright pixels (the car) remain fully visible.
+   * This makes ONLY the Porsche appear — no background box.
+   */
+  mix-blend-mode: screen;
+  filter: brightness(1.15) contrast(1.08);
+}
+
+/* Overlay is fully transparent — the mix-blend-mode handles everything */
+.hero-video-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  /* Only a very soft bottom fade for the HUD controls readability */
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 70%,
+    rgba(6, 8, 12, 0.45) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Scanline hidden — clean car-only look */
+.hero-video-scanline {
+  display: none;
+}
+
+/* Top HUD */
+.hero-video-top-hud {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-video-top-hud > * {
+  pointer-events: auto;
+}
+
+.video-badge-pill {
+  background: rgba(14, 18, 24, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.video-live-recording-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3b30;
+  box-shadow: 0 0 10px #ff3b30;
+  animation: pulse-recording 1.2s infinite;
+}
+
+@keyframes pulse-recording {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
+}
+
+.video-quality-tag {
+  background: rgba(14, 18, 24, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 107, 0, 0.4);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-accent);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Center Big Play Button */
+.video-center-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 107, 0, 0.9);
+  border: 2px solid #ffffff;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 15;
+  box-shadow: 0 0 35px rgba(255, 107, 0, 0.8);
+  transition: all var(--transition-fast);
+}
+
+.video-center-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: #ffffff;
+  color: var(--color-accent);
+}
+
+.play-icon-offset {
+  margin-left: 4px;
+}
+
+/* Bottom Floating Control Bar */
+.hero-video-bottom-hud {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 1.5rem 1.25rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  z-index: 10;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.video-info-block {
+  max-width: 60%;
+}
+
+.video-hud-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.2rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.video-hud-sub {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+/* Control Buttons */
+.video-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.video-ctrl-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(14, 18, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.video-ctrl-btn:hover {
+  background: var(--color-accent);
+  color: #000000;
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+}
+
+/* Scene Switcher Selector */
+.video-scene-selector {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(14, 18, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-full);
+  z-index: 10;
+}
+
+.scene-selector-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.scene-pills-list {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.scene-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.scene-pill:hover,
+.scene-pill.active-scene-pill {
+  background: rgba(255, 107, 0, 0.2);
+  border-color: var(--color-accent);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 107, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .hero-video-frame {
+    min-height: 320px;
+  }
+  .hero-video-bottom-hud {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+  .video-scene-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    border-radius: var(--radius-lg);
+  }
+}

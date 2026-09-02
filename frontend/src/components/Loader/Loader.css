@@ -1,0 +1,105 @@
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl);
+  min-height: 250px;
+  gap: var(--space-md);
+}
+
+.loader-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg);
+  z-index: 9999;
+}
+
+.loader-ring {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 107, 0, 0.15);
+  border-top-color: var(--color-accent);
+  animation: spinSlow 1s linear infinite;
+}
+
+.loader-inner-circle {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-bottom-color: #ffffff;
+  animation: spinSlow 1.5s linear infinite reverse;
+}
+
+.loader-text {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+/* Skeleton Card CSS */
+.skeleton-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 380px;
+}
+
+.skeleton-image {
+  height: 200px;
+  width: 100%;
+}
+
+.skeleton-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  flex: 1;
+}
+
+.skeleton-title {
+  height: 24px;
+  width: 70%;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.skeleton-tag {
+  height: 20px;
+  width: 60px;
+}
+
+.skeleton-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-price {
+  height: 28px;
+  width: 100px;
+}
+
+.skeleton-btn {
+  height: 38px;
+  width: 110px;
+  border-radius: var(--radius-md);
+}

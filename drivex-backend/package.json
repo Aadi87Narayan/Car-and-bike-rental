@@ -1,0 +1,45 @@
+{
+  "name": "drivex-backend",
+  "version": "1.0.0",
+  "description": "Production-ready, India-first vehicle rental platform REST API for DriveX (Cars, Bikes, Scooters, EVs)",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed": "node src/seed/index.js",
+    "init-sql": "node init-sql-db.js",
+    "test": "node --test tests/api.test.js"
+  },
+  "keywords": [
+    "drivex",
+    "vehicle-rental",
+    "express",
+    "mongodb",
+    "mongoose",
+    "jwt",
+    "india",
+    "geospatial"
+  ],
+  "author": "DriveX Engineering Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
