@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Clock, Search, AlertCircle } from 'lucide-react';
+import { MapPin, Calendar, Clock, Search, AlertCircle, IndianRupee, Star, Zap } from 'lucide-react';
 import { useBooking } from '../../context/BookingContext';
+import { recommendByBudget } from '../../utils/mlRecommender';
 import './BookingSearch.css';
 
 const POPULAR_CITIES = [
@@ -37,6 +38,33 @@ export function BookingSearch({ compact = false }) {
 
 
   const [errors, setErrors] = useState({});
+  const [budget, setBudget] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const budgetRef = useRef(null);
+
+  // Run ML recommender whenever budget changes
+  useEffect(() => {
+    if (!budget || Number(budget) <= 0) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    const results = recommendByBudget(budget, 3);
+    setSuggestions(results);
+    setShowSuggestions(results.length > 0);
+  }, [budget]);
+
+  // Close suggestions on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (budgetRef.current && !budgetRef.current.contains(e.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
 
   const validate = () => {
     const newErrors = {};
@@ -202,6 +230,79 @@ export function BookingSearch({ compact = false }) {
             <span className="field-error-msg">
               <AlertCircle size={12} /> {errors.dropoffDate}
             </span>
+          )}
+        </div>
+
+        <div className="search-field-divider" />
+
+        {/* Field 5: Budget */}
+        <div className="search-field-group budget-field-group" ref={budgetRef}>
+          <label htmlFor="search-budget" className="search-field-label">
+            <IndianRupee size={16} className="field-icon" />
+            <span>Your Budget / Day</span>
+          </label>
+          <div className="search-input-wrapper">
+            <input
+              id="search-budget"
+              type="number"
+              min="500"
+              max="50000"
+              placeholder="e.g. 3000"
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+              onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+              className="search-input"
+              aria-label="Budget per day"
+            />
+          </div>
+
+          {/* ML Suggestion Dropdown */}
+          {showSuggestions && (
+            <div className="budget-suggestions-panel">
+              <div className="suggestions-header">
+                <Zap size={13} />
+                <span>AI Picks for ₹{Number(budget).toLocaleString('en-IN')}/day</span>
+              </div>
+              {suggestions.map((car) => (
+                <button
+                  key={car.id}
+                  type="button"
+                  className="suggestion-item"
+                  onClick={() => {
+                    setShowSuggestions(false);
+                    navigate(`/cars/${car.id}`);
+                  }}
+                >
+                  <img
+                    src={car.image}
+                    alt={car.name}
+                    className="suggestion-img"
+                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1555353540-64580b51c258?auto=format&fit=crop&w=80&q=60'; }}
+                  />
+                  <div className="suggestion-info">
+                    <span className="suggestion-name">{car.name}</span>
+                    <span className="suggestion-meta">
+                      ₹{car.pricePerDay.toLocaleString('en-IN')}/day
+                      &nbsp;•&nbsp;
+                      <Star size={11} fill="#ffb800" color="#ffb800" /> {car.rating}
+                    </span>
+                  </div>
+                  <span className="suggestion-score">
+                    {Math.round(car._score * 100)}% match
+                  </span>
+                </button>
+              ))}
+              <button
+                type="button"
+                className="suggestions-view-all"
+                onClick={() => {
+                  setShowSuggestions(false);
+                  navigate(`/cars?maxPrice=${budget}`);
+                }}
+              >
+                View all within budget →
+              </button>
+            </div>
           )}
         </div>
 
